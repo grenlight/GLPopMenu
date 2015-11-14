@@ -74,17 +74,47 @@ export class GLPopMenu extends IAnimation {
   //显示
   dispaly() {
     this.isShow = true;
+    this.svg.domElement.style.opacity = this.currentAlpha = 0;
     this.svg.domElement.style.visibility = 'visible';
 
-  // this.startAnimating();
+    this.startAnimating();
   }
 
   //退出显示
   quitDisplay() {
     this.isShow = false;
-    this.svg.domElement.style.visibility = 'hidden';
+    this.startAnimating();
+  }
 
-    // this.startAnimating();
+  stopAnimating() {
+    super.stopAnimating();
+    if (this.isShow === false) {
+      this.svg.domElement.style.visibility = 'hidden';
+    }
+  }
+
+  enterFrame() {
+    this.isAnimating = true;
+    if (this.isShow === true) {
+      this.currentAlpha += 0.07;
+      if (this.currentAlpha > 0.95) {
+        this.currentAlpha = 1;
+        this.stopAnimating();
+      } else {
+        console.log("fdadsa");
+        super.enterFrame();
+      }
+    } else {
+      this.currentAlpha -= 0.09;
+      if (this.currentAlpha < 0.05) {
+        this.currentAlpha = 0;
+        this.stopAnimating();
+      } else {
+        super.enterFrame();
+      }
+    }
+
+    this.svg.domElement.style.opacity = this.currentAlpha;
   }
 
   menuTapped(e) {

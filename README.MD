@@ -1,5 +1,6 @@
-#基于 ECMAScript2015 + SVG 的 GLPopMenu.js
+#基于 ECMAScript2015 + SVG 实现的 GLPopMenu.js
 
+#
 
 ##GLPoint, GLRect 是自定义的俩个数据类型，用于辅助坐标计算；
 

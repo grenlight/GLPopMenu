@@ -55,7 +55,6 @@ export class GLSVG {
     }
     //校验尖角的偏移量
     this.angleOffsetX = this.validateAngleOffsetX(angleOffsetX);
-console.log(this.frame.halfWidth, angleOffsetX, this.angleOffsetX);
     this.domElement.style.top = this.frame.y;
     this.domElement.style.left = this.frame.x;
 
