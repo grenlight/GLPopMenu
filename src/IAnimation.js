@@ -7,18 +7,18 @@ export class IAnimation {
   startAnimating() {
     this.requestAnimation();
   }
-  
+
   stopAnimating() {
     cancelAnimationFrame(this.animationHandler);
   }
 
-  enterFarame() {
+  enterFrame() {
     this.requestAnimation();
   }
 
   requestAnimation() {
     this.animationHandler = requestAnimationFrame(() => {
-      this.enterFarame();
+      this.enterFrame();
     });
   }
 

@@ -76,7 +76,6 @@ menu.setMenuItems([{'text':'复制', 'callback': copyed},
 {'text':'分享到哪啊', 'callback': shared}]);
 
 function screenTapped(e) {
-  console.log(e.clientX);
   menu.ifNeedsDisplay(document.body, new GLPoint(e.clientX, e.clientY));
 }
 var container = document.getElementById('container');

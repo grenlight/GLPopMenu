@@ -97,21 +97,15 @@ export class GLPopMenu extends IAnimation {
     this.isAnimating = true;
     if (this.isShow === true) {
       this.currentAlpha += 0.07;
-      if (this.currentAlpha > 0.95) {
-        this.currentAlpha = 1;
-        this.stopAnimating();
-      } else {
-        console.log("fdadsa");
-        super.enterFrame();
-      }
     } else {
       this.currentAlpha -= 0.09;
-      if (this.currentAlpha < 0.05) {
-        this.currentAlpha = 0;
-        this.stopAnimating();
-      } else {
-        super.enterFrame();
-      }
+    }
+    //边界条件检测
+    if (this.currentAlpha < 0.0 || this.currentAlpha > 1.0) {
+      this.currentAlpha = this.currentAlpha < 0.0 ? 0 : 1;
+      this.stopAnimating();
+    } else {
+      super.enterFrame();
     }
 
     this.svg.domElement.style.opacity = this.currentAlpha;
