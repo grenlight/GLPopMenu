@@ -5,7 +5,7 @@ export class GLPoint {
   }
 
   static zero() {
-    return new GLPoint();
+   return new GLPoint(); 
   }
 
   static copy(p) {

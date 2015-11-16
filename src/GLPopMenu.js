@@ -32,10 +32,10 @@ export class GLPopMenu extends IAnimation {
       this.isShow = this.isAnimating = false;
       // this.animationNode = this.group;
       this.svg = new GLSVG();
-      this.svg.domElement.addEventListener("mouseup", (e)=>{
+      this.svg.domElement.addEventListener('mouseup', (e) => {
         this.menuTapped(e);
       }, false);
-      this.svg.domElement.addEventListener("touchend", (e)=>{
+      this.svg.domElement.addEventListener('touchend', (e) => {
         this.menuTapped(e);
       }, false);
     }
@@ -117,7 +117,7 @@ export class GLPopMenu extends IAnimation {
     touchX = e.pageX - rect.x;
     touchY = e.pageY - rect.y;
 
-    for (var i=0; i<this.tapRanges.length; i++) {
+    for (var i = 0; i < this.tapRanges.length; i++) {
       if (touchX < this.tapRanges[i].to) {
         this.tapRanges[i].callback();
         this.quitDisplay();
