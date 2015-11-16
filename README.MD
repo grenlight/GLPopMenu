@@ -7,7 +7,9 @@
 ## 代码说明
 
 > GLPoint, GLRect 是自定义的俩个数据类型，用于辅助坐标计算；
+
 > GLSVG 实现 svg 图形的绘制；
+
 > IAnimation 定义动画接口；
 
 ## 调用方法
