@@ -16,7 +16,7 @@ export class GLSVG {
     this.marginRight = 5;
 
     this.screenWidth = window.innerWidth;
-    this.maxFrameX = this.screenWidth-this.marginRight;
+    this.maxFrameX = this.screenWidth - this.marginRight;
     this.angleOffsetX = 0;
 
     this.domElement = this.createSVGElement();
@@ -28,6 +28,7 @@ export class GLSVG {
   }
 
   setPosition(parentElement, position) {
+    // console.log(this.domElement.getElementById('borderPath'));
     if (parentElement !== this.parentElement) {
       if (this.parentElement) {
         this.parentElement.removeChild(this.domElement);
@@ -35,6 +36,7 @@ export class GLSVG {
       parentElement.appendChild(this.domElement);
       this.parentElement = parentElement;
     }
+
     this.frame.center = GLPoint.copy(position);
     let spaceHeight = this.frame.height + this.directionOffsetY;
     if (position.y < spaceHeight) {
@@ -47,7 +49,7 @@ export class GLSVG {
     //计算在 X 轴上 menu 的 frame（rect）在屏幕内
     let angleOffsetX = 0;
     if (this.frame.x < this.marginLeft) {
-      angleOffsetX = this.frame.x-this.marginLeft;
+      angleOffsetX = this.frame.x - this.marginLeft;
       this.frame.x = this.marginLeft;
     } else if (this.frame.getMaxX() > this.maxFrameX) {
       angleOffsetX = this.frame.getMaxX() - this.maxFrameX;
@@ -60,11 +62,12 @@ export class GLSVG {
 
     this.calculateBorder();
     this.attachText();
+
   }
 
   //校验尖角的偏移量
   validateAngleOffsetX(angleOffsetX) {
-    let maxOffsetX = this.frame.halfWidth-13;
+    let maxOffsetX = this.frame.halfWidth - 13;
     if (this.isUpDirection) {
       angleOffsetX *= (-1);
     }

@@ -5,7 +5,7 @@ export class GLPoint {
   }
 
   static zero() {
-   return new GLPoint(); 
+    return new GLPoint();
   }
 
   static copy(p) {
@@ -14,5 +14,10 @@ export class GLPoint {
 
   isEqualTo(p) {
     return (p.x === this.x) && (p.y === this.y);
+  }
+
+  //转换点的位置，p的参考系从 this.parent 转到 this
+  converPoint(p) {
+    return new GLPoint(p.x - this.x, p.y - this.y);
   }
 }

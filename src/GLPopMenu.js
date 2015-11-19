@@ -29,7 +29,7 @@ export class GLPopMenu extends IAnimation {
 
       this.currentScale = this.currentAlpha = 0;
       this.currentTranslate = 30;
-      this.isShow = this.isAnimating = false;
+      this.isShow = false;
       // this.animationNode = this.group;
       this.svg = new GLSVG();
       this.svg.domElement.addEventListener('mouseup', (e) => {

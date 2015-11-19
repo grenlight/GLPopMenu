@@ -3,7 +3,9 @@ var webpack = require('webpack');
 var path = require('path');
 
 var entryFile = path.join(__dirname, '/src/GLPopMenu.js');
-module.exports = {
+var bubbleView = path.join(__dirname, '/src/GLBubbleView.js');
+
+module.exports = [{
   entry: entryFile,
   // devtool: 'eval-source-map',//导出souce map
   output: {
@@ -17,21 +19,24 @@ module.exports = {
       loader: 'babel-loader'
     }]
   },
-
-
-plugins: [
-  new webpack.optimize.UglifyJsPlugin(),
-]
-};
-
-// var entryFile2 = path.join(__dirname, '/src/polyfills/ecmascript_simd.js');
-// module.exports = {
-//   entry: entryFile2,
-//   output: {
-//     path: path.join(__dirname, '/bin'),
-//     filename: 'ecmascript_simd.min.js'
-// },
-// plugins: [
-//   new webpack.optimize.UglifyJsPlugin(),
-// ]
-// };
+  plugins: [
+    new webpack.optimize.UglifyJsPlugin(),
+  ]
+},
+  {
+    entry: bubbleView,
+    output: {
+      path: path.join(__dirname, '/bin'),
+      filename: 'glbubbleview.js'
+    },
+    module: {
+      loaders: [{
+        test: [path.join(__dirname, '/src')],
+        exclude: /(node_modules)/,
+        loader: 'babel-loader'
+      }]
+    },
+  // plugins: [
+  //   new webpack.optimize.UglifyJsPlugin(),
+  // ]
+  }];

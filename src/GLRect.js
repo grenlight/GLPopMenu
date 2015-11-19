@@ -69,4 +69,13 @@ export class GLRect {
     return this.y + this._height;
   }
 
+  //转换点的位置，p的参考系从 this.parent 转到 this
+  converPoint(p) {
+    return new GLPoint(p.x - this.x, p.y - this.y);
+  }
+
+  convertRect(rect) {
+    return new GLRect(rect.x - this.x, rect.y - this.y, rect.width, rect.height);
+  }
+
 }
