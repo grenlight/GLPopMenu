@@ -5,7 +5,11 @@
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
   <meta name="author" content="grenlight">
-  <script type='text/javascript' src='./bin/glbubbleview.js'></script>
+
+  <script type="text/javascript" src='./bin/jquery-2.1.4.min.js'></script>
+  <script type='text/javascript' src='./bin/pixi/pixi.js'></script>
+
+  <script type='text/javascript' src='./bin/gren.js'></script>
 
 <style media="screen">
 
@@ -20,7 +24,7 @@
 </head>
 
 <body>
-  <section id="container" style="width:94%; height:195%; background-color:#999999;position:absolute; left:0px; top:0px;">
+  <section id="container" style="width:94%; height:195%; background-color:#fafafa;position:absolute; left:0px; top:0px;">
 
   <p>
     GLBubbleView 基于 canvas 2d 的汽泡视图
@@ -38,29 +42,33 @@
 
 <p><b>调用代码：一行</b></p>
   <pre id="pre" class="prettyprint" style="font-size:10px;background-color:#252525; padding:5px; color:#ffffff">
-  bubbleView.ifNeedsDisplay(text, position);
+
+  bubbleView.ifNeedsDisplay(text, position, innerCallback, outerCallback);
   </pre>
 </section>
 
 <script type="text/javascript">
 var result = document.getElementById("result");
 
-var text = 'GLBubbleView 基于 canvas 2d 的汽泡视图.GLBubbleView 基于 canvas 2d 的汽泡视图. GLBubbleView 基于 canvas 2d 的汽泡视图。GLBubbleView 基于 canvas 2d 的汽泡视图。';
+// var text = 'GLBubbleView 基于 canvas 2d 的汽泡视图.GLBubbleView 基于 canvas 2d 的汽泡视图. GLBubbleView 基于 canvas 2d 的汽泡视图。GLBubbleView 基于 canvas 2d 的汽泡视图。GLBubbleView 基于 canvas 2d 的汽泡视图.GLBubbleView 基于 canvas 2d 的汽泡视图. GLBubbleView 基于 canvas 2d 的汽泡视图。GLBubbleView 基于 canvas 2d 的汽泡视图。';
+var text = 'GLBubbleView 基于 canvas 2d 的汽泡视图.GLBubbleView 基于 canvas 2d 的汽泡视图';
 
-function bubbleTappedCallback() {
+function  innerCallback() {
   result.innerText = '内部';
 }
 
-function spaceTappedCallback() {
+function outerCallback() {
   result.innerText = '外部';
 }
 
 function screenTapped(e) {
   var position = new GLPoint(e.clientX, e.clientY)
-  GLBubbleView.sharedInstance.ifNeedsDisplay(text, position);
+  GLBubbleView.sharedInstance.ifNeedsDisplay(text, position, innerCallback, outerCallback);
 }
 var container = document.getElementById('container');
 container.addEventListener("mouseup", screenTapped, false);
+
+
 </script>
 
 

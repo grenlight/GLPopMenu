@@ -1,7 +1,7 @@
-import { GLSVG } from './GLSVG.js';
-import { IAnimation } from './IAnimation.js';
-import { GLPoint } from './GLPoint.js';
-import { GLRect } from './GLRect.js';
+import { GLSVG } from './elements/GLSVG.js';
+import { IAnimation } from './interaction/IAnimation.js';
+import { GLPoint } from './math/GLPoint.js';
+import { GLRect } from './math/GLRect.js';
 
 /**
 *类 iOS 文本 Selection 菜单
@@ -10,6 +10,7 @@ import { GLRect } from './GLRect.js';
 *当 position.y > frame 的高度时，尖角自动朝下
 *当 (screen.width - position.x) < frame.width/2 || position.x < frame.width/2 *时，保持尖角在屏幕的相对位置不变，整体位置向左|右移，保证bounds落在屏幕内
 */
+var Symbol = require('es6-symbol');
 let singleton = Symbol();
 let singletonEnforcer = Symbol();
 
@@ -29,15 +30,20 @@ export class GLPopMenu extends IAnimation {
 
       this.currentScale = this.currentAlpha = 0;
       this.currentTranslate = 30;
+
       this.isShow = false;
+      this.panel = this.createPanel();
+
       // this.animationNode = this.group;
       this.svg = new GLSVG();
-      this.svg.domElement.addEventListener('mouseup', (e) => {
+      this.addTapListener(this.svg.domElement, (e) => {
         this.menuTapped(e);
-      }, false);
-      this.svg.domElement.addEventListener('touchend', (e) => {
-        this.menuTapped(e);
-      }, false);
+      });
+      this.panel.appendChild(this.svg.domElement);
+
+      this.tappedHandler = (e) => {
+        this.panelTapped(e);
+      };
     }
   }
 
@@ -62,11 +68,13 @@ export class GLPopMenu extends IAnimation {
   *
   *@param {Array} point 显示在屏幕上的X,Y坐标
   */
-  ifNeedsDisplay(parentElement, position) {
+  ifNeedsDisplay(position) {
     if (this.isShow === true) {
       this.quitDisplay();
     } else {
-      this.svg.setPosition(parentElement, position);
+      document.body.appendChild(this.panel);
+      this.addTapListener(this.panel, this.tappedHandler);
+      this.svg.setPosition(position);
       this.dispaly();
     }
   }
@@ -75,7 +83,6 @@ export class GLPopMenu extends IAnimation {
   dispaly() {
     this.isShow = true;
     this.svg.domElement.style.opacity = this.currentAlpha = 0;
-    this.svg.domElement.style.visibility = 'visible';
 
     this.startAnimating();
   }
@@ -89,7 +96,8 @@ export class GLPopMenu extends IAnimation {
   stopAnimating() {
     super.stopAnimating();
     if (this.isShow === false) {
-      this.svg.domElement.style.visibility = 'hidden';
+      document.body.removeChild(this.panel);
+      this.removeTapListener(this.panel, this.tappedHandler);
     }
   }
 
@@ -109,6 +117,11 @@ export class GLPopMenu extends IAnimation {
     }
 
     this.svg.domElement.style.opacity = this.currentAlpha;
+  }
+
+  panelTapped(e) {
+    e.preventDefault();
+    this.quitDisplay();
   }
 
   menuTapped(e) {
@@ -155,7 +168,11 @@ export class GLPopMenu extends IAnimation {
     this.svg.textItems = this.tapRanges;
   }
 
-}
+  createPanel() {
+    let style = 'position:fixed; z-index:20000; top:0px; left:0px; width:' + window.innerWidth + 'px; ' + 'height:' + window.innerHeight + 'px;';
+    let div = document.createElement('div');
+    div.setAttribute('style', style);
+    return div;
+  }
 
-window.GLPopMenu = GLPopMenu;
-window.GLPoint = GLPoint;
+}

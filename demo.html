@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
   <meta name="author" content="grenlight">
-  <script type='text/javascript' src='./bin/glpopmenu.js'></script>
+  <script type='text/javascript' src='./bin/gren.min.js'></script>
 
 <style media="screen">
 
@@ -74,12 +74,11 @@ menu.setMenuItems([{'text':'复制', 'callback': copyed},
 
 function screenTapped(e) {
   var position = new GLPoint(e.clientX, e.clientY)
-  menu.ifNeedsDisplay(document.body, position);
+  menu.ifNeedsDisplay(position);
 }
 var container = document.getElementById('container');
 container.addEventListener("mouseup", screenTapped, false);
 </script>
-
 
 </body>
 </html>

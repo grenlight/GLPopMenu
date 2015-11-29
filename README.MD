@@ -1,8 +1,10 @@
 # 类似 iOS UIMenuController 的上下文菜单
 
+# 类似 多看阅读 的汽泡视图
+
 ---
 
-基于 ECMAScript2015 + SVG 实现。
+基于 ECMAScript2015 + SVG + Canvas 实现。
 
 > 基于窗口坐标自动判断尖角自动朝向
 
@@ -25,4 +27,8 @@ GLPopMenu.instance
 
 GLPopMenu.instance
 .ifNeedsDisplay(parentElement, position);
+
+GLBubbleView.sharedInstance.
+ifNeedsDisplay(text, position, innerCallback, outerCallback);
+
 ```
