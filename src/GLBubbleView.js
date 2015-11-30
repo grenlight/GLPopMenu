@@ -30,7 +30,7 @@ let singletonEnforcer = Symbol();
 export class GLBubbleView extends IAnimation {
   constructor(enforcer) {
     if (enforcer !== singletonEnforcer) {
-      throw 'GLBubbleView 是单例类，调用方法：GLBubbleView.sharedInstance()';
+      throw 'GLBubbleView 是单例类，调用方法：GLBubbleView.sharedInstance';
     } else {
       super();
       this.isShow = false;
@@ -45,12 +45,12 @@ export class GLBubbleView extends IAnimation {
       this.marginRight = 5;
       this.maxFrameX = window.innerWidth - this.marginRight;
 
-      this.fontSize = 14;
-      this.lineHeight = 16;
+      this.fontSize = 16;
+      this.lineHeight = 18;
       //文本内容相关
       this.content = null;
       this.contentSize = GLSize.zero()
-      this.contentMargin = new GLEdgeInsets(5, 7, 5, 7);
+      this.contentMargin = new GLEdgeInsets(12, 12, 10, 12);
       this.contentDiv = this.createContentDiv();
 
       this.panel = this.createPanel(window.innerWidth, window.innerHeight);
@@ -134,7 +134,8 @@ export class GLBubbleView extends IAnimation {
 
   tapped(e) {
     e.preventDefault();
-    let point = new PIXI.Point(e.pageX - window.pageXOffset, e.pageY - window.pageYOffset)
+    let tp = this.getTouchedPosition(e);
+    let point = new PIXI.Point(tp.x - window.pageXOffset, tp.y - window.pageYOffset)
     if (this.graphics.containsPoint(point)) {
       if (typeof this.tappedInnerCallback === 'function') {
         this.tappedInnerCallback();

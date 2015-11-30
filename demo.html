@@ -67,10 +67,13 @@ function shared() {
 
 var menu =  GLPopMenu.instance;
 
+// menu.setMenuItems([{'text':'复制', 'callback': copyed},
+// {'text':'书摘', 'callback': digest},
+// {'text':'笔记', 'callback': note},
+// {'text':'分享到哪啊', 'callback': shared}]);
+
 menu.setMenuItems([{'text':'复制', 'callback': copyed},
-{'text':'书摘', 'callback': digest},
-{'text':'笔记', 'callback': note},
-{'text':'分享到哪啊', 'callback': shared}]);
+{'text':'书摘', 'callback': digest}]);
 
 function screenTapped(e) {
   var position = new GLPoint(e.clientX, e.clientY)

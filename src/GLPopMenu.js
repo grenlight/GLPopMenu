@@ -125,10 +125,12 @@ export class GLPopMenu extends IAnimation {
   }
 
   menuTapped(e) {
+    e.preventDefault();
     var touchX, touchY;
+    let tp = this.getTouchedPosition(e);
     var rect = this.svg.frame;
-    touchX = e.pageX - rect.x;
-    touchY = e.pageY - rect.y;
+    touchX = tp.x - rect.x;
+    touchY = tp.y - rect.y;
 
     for (var i = 0; i < this.tapRanges.length; i++) {
       if (touchX < this.tapRanges[i].to) {

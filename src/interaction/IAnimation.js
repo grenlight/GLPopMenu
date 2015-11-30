@@ -1,3 +1,5 @@
+import { GLPoint } from '../math/GLPoint.js';
+
 //动画接口
 export class IAnimation {
   constructor() {
@@ -37,6 +39,14 @@ export class IAnimation {
 
   destory() {
     this.stopAnimating();
+  }
+
+  getTouchedPosition(e) {
+    if (e.pageX) {
+      return new GLPoint(e.pageX, e.pageY);
+    } else {
+      return new GLPoint(e.changedTouches[0].pageX, e.changedTouches[0].pageY);
+    }
   }
 
 }

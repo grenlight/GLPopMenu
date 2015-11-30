@@ -5,10 +5,10 @@ export class GLSVG {
     //是不是尖角朝上
     this.isUpDirection = false;
     this.minWidth = 64;
-    this.directionOffsetY = 5;
+    this.directionOffsetY = 2;
 
     this.textItems = null;
-    this.frame = new GLRect(100, 100, 64, 54);
+    this.frame = new GLRect(100, 100, 64, 50);
 
     //左右最小边距
     this.marginLeft = 5;
@@ -87,8 +87,8 @@ export class GLSVG {
 
   calculateBorder() {
     let radius = 3;
-    let trangleHeight = 8;
-    let trangleWidth = 12;
+    let trangleHeight = 6;
+    let trangleWidth = 10;
     let minX = 0.5,
       maxX = this.frame.width - 1,
       minY = 0.5,
@@ -110,8 +110,6 @@ export class GLSVG {
       ' A' + radius + ' ' + radius + ' 0 0 1 ' + minX + ' ' + (maxY - radius) +
       ' L' + minX + ' ' + (minY + radius) +
       ' A' + radius + ' ' + radius + ' 0 0 1 ' + (minX + radius) + ' ' + minY;
-
-    console.log(this.domElement);
 
     this.borderPath.setAttribute('d', borderPath);
   }
@@ -147,9 +145,11 @@ export class GLSVG {
       return use;
     }
 
+    let noSelect = '-webkit-touch-callout: none; -webkit-user-select: none;-khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;-webkit-tap-highlight-color: rgba(255, 255, 255, 0);';
+
     let svg = createElement('svg');
     setCommonAttri(svg, 'glpopmenu', this.minWidth, this.frame.height);
-    setStyle(svg, 'cursor:hand; position: absolute; visibility:visiable;');
+    setStyle(svg, 'cursor:hand; position: absolute; visibility:visiable;' + noSelect);
 
     let symbol = createElement('symbol');
     symbol.setAttributeNS(null, 'id', 'border');
@@ -160,17 +160,17 @@ export class GLSVG {
 
     let defs = createElement('defs');
     let mask = createElement('mask');
-    setCommonAttri(mask, 'alphaMask', '400', '54');
+    setCommonAttri(mask, 'alphaMask', '400', '50');
 
     let rect = createElement('rect');
-    setCommonAttri(rect, 'rect', '400', '54');
-    setStyle(rect, 'stroke:none; fill: #333333');
+    setCommonAttri(rect, 'rect', '400', '50');
+    setStyle(rect, 'stroke:none; fill: #333333;' + noSelect);
     mask.appendChild(rect);
     defs.appendChild(mask);
     svg.appendChild(defs);
 
     //阴影
-    let use0 = createUse('0', '3', 'fill:#000000;stroke-width:0; mask:url(#alphaMask);');
+    let use0 = createUse('0', '2', 'fill:#000000;stroke-width:0; mask:url(#alphaMask);');
     let use1 = createUse('0', '0', 'fill:#555;stroke:#353535;stroke-width:1;');
 
     this.backgroundGroup = createElement('g');
@@ -188,32 +188,6 @@ export class GLSVG {
       this.textGroup.appendChild(text);
     }
     svg.appendChild(this.textGroup);
-    //
-    //
-    // svg.innerHTML = `<symbol id="border">
-    //         <path  id="borderPath" d="M3.5 0.5 L256 0.5 A3 3 0 0 1 259 3.5 L259 33 A3 3 0 0 1 256 36 L135.5 36 L129.5 44 L123.5 36 L3.5 36 A3 3 0 0 1 0.5 33 L0.5 3.5 A3 3 0 0 1 3.5 0.5" />
-    //       </symbol>
-    //       <defs>
-    //         <mask id="alphaMask" x="0" y="0" width="400" height="54">
-    //           <rect x="0" y="0" width="400" height="54" style="stroke:none; fill: #333333" />
-    //         </mask>
-    //       </defs>
-    //       <g id="backgroundGroup" transform="rotate(0)">
-    //         <!-- 阴影 -->
-    //         <use xlink:href="#border" x="0" y="3" style="fill:#000000;stroke-width:0; mask:url(#alphaMask); "> </use>
-    //         <use xlink:href="#border" x="0" y="0" style="fill:#555;stroke:#353535;stroke-width:1;"></use>
-    //       </g>
-    //
-    //       <g id="group" style="font-size:16px;fill:#eeeeee;text-anchor: middle">
-    //         <!-- 动态插入进来的文本节点在Safari上无法显示，故事先创建好文本节点 -->
-    //         <text x="0" y="23" ></text>
-    //         <text x="0" y="23" ></text>
-    //         <text x="0" y="23" ></text>
-    //         <text x="0" y="23" ></text>
-    //         <text x="0" y="23" ></text>
-    //         <text x="0" y="23" ></text>
-    //         <text x="0" y="23" ></text>
-    //       </g>`;
     return svg;
   }
 }
