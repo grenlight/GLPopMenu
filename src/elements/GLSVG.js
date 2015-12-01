@@ -5,10 +5,10 @@ export class GLSVG {
     //是不是尖角朝上
     this.isUpDirection = false;
     this.minWidth = 64;
-    this.directionOffsetY = 2;
+    this.directionOffsetY = 0;
 
     this.textItems = null;
-    this.frame = new GLRect(100, 100, 64, 50);
+    this.frame = new GLRect(100, 100, 64, 48);
 
     //左右最小边距
     this.marginLeft = 5;
@@ -68,10 +68,10 @@ export class GLSVG {
   }
 
   attachText() {
-    let textOffsetY = 23;
+    let textOffsetY = 21;
 
     if (this.isUpDirection) {
-      textOffsetY = 23 + 17;
+      textOffsetY = 21 + 16;
       this.backgroundGroup.setAttribute('transform', 'translate(' + this.frame.halfWidth + ', ' + this.frame.halfHeight + ') rotate(180) translate(' + this.frame.halfWidth * (-1) + ', ' + this.frame.halfHeight * (-1) + ')');
     } else {
       this.backgroundGroup.setAttribute('transform', 'rotate(0)');
@@ -92,7 +92,7 @@ export class GLSVG {
     let minX = 0.5,
       maxX = this.frame.width - 1,
       minY = 0.5,
-      maxY = 36;
+      maxY = 32;
     let angleCenterX = maxX / 2 + this.angleOffsetX;
     let borderPath = 'M' + (minX + radius) + ' ' + minY +
       ' L' + (maxX - radius) + ' ' + minY +
@@ -160,10 +160,10 @@ export class GLSVG {
 
     let defs = createElement('defs');
     let mask = createElement('mask');
-    setCommonAttri(mask, 'alphaMask', '400', '50');
+    setCommonAttri(mask, 'alphaMask', '400', '48');
 
     let rect = createElement('rect');
-    setCommonAttri(rect, 'rect', '400', '50');
+    setCommonAttri(rect, 'rect', '400', '48');
     setStyle(rect, 'stroke:none; fill: #333333;' + noSelect);
     mask.appendChild(rect);
     defs.appendChild(mask);
@@ -184,7 +184,7 @@ export class GLSVG {
     for (let i = 0; i < 6; i++) {
       let text = createElement('text');
       text.setAttributeNS(null, 'x', '0');
-      text.setAttributeNS(null, 'y', '23');
+      text.setAttributeNS(null, 'y', '21');
       this.textGroup.appendChild(text);
     }
     svg.appendChild(this.textGroup);
