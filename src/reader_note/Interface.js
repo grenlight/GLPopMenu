@@ -1,5 +1,6 @@
 import { NoteManager } from './NoteManager.js';
 import { NoteObject } from './NoteObject.js';
+import { FreeFallingEffect } from '../reader_backgroundColor/FreeFallingEffect.js';
 
 export function textCopied() {
   let selectedRange = EPUBJS.DomUtil.getSelection(NoteManager.sharedInstance.view);
@@ -60,7 +61,12 @@ export function updateNote(dataId, comment) {
   EPUBJS.core.postMessageToMobile('updateNote', true);
 }
 
-//配置背景颜色
+/**
+*配置背景颜色
+*
+*param color = #fffff 或 0xffffff
+*/
+let bgColorEffect = new FreeFallingEffect();
 export function configBackgroundColor(color) {
-
+  bgColorEffect.changeToColor(color);
 }

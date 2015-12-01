@@ -1,11 +1,13 @@
 import { GLPoint } from './math/GLPoint.js';
 import { GLPopMenu } from './GLPopMenu.js';
 import { GLBubbleView } from './GLBubbleView.js';
+import { FreeFallingEffect } from './reader_backgroundColor/FreeFallingEffect.js';
 
 window.GLPoint = GLPoint;
 window.GLPopMenu = GLPopMenu;
 window.GLBubbleView = GLBubbleView;
 window.GLBubbleView.sharedInstance;
+window.FreeFallingEffect = FreeFallingEffect;
 
 import { textCopied, getText, createNote, repaintNote, updateNote, configBackgroundColor } from './reader_note/Interface.js';
 
