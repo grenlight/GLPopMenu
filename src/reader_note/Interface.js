@@ -1,4 +1,5 @@
 import { NoteManager } from './NoteManager.js';
+import { NoteObject } from './NoteObject.js';
 
 export function textCopied() {
   let selectedRange = EPUBJS.DomUtil.getSelection(NoteManager.sharedInstance.view);
@@ -18,54 +19,43 @@ export function getText() {
 
 export function createNote(comment) {
   var selectedRange = EPUBJS.DomUtil.getSelection(NoteManager.sharedInstance.view);
-  var startContainer, endContainer, startOffset, endOffset, parent;
   let range = selectedRange.getRangeAt(0);
   if (!range) {
     // 试图从currentRange中读取数据
     range = NoteManager.sharedInstance.currentRangeClone;
   }
-  let text = range.toString();
-  if (text.length == 0) {
+  let note = NoteObject.createByRange(range, comment);
+  if (!note) {
     return;
   }
-  startContainer = range.startContainer;
-  endContainer = range.endContainer;
-  parent = range.commonAncestorContainer;
-  startOffset = range.startOffset;
-  endOffset = range.endOffset;
-  var data = NoteManager.sharedInstance._applyInlineStyle(text, comment, startContainer, endContainer, startOffset, endOffset, parent, true);
+  var data = NoteManager.sharedInstance._applyInlineStyle(note, true);
   EPUBJS.core.postMessageToMobile('createNote', data);
+
+  NoteManager.sharedInstance.noteList.add(note);
 }
 
 export function repaintNote(data) {
-  var view = NoteManager.sharedInstance.view;
-  var d = view.doc;
-  if (!data || !(data instanceof Array)) {
+  if (!data || !(data instanceof Array) || data.length === 0) {
     return;
   }
-  if (data.length == 0)
-    return;
+
+  NoteManager.sharedInstance.noteList.clear();
+  let view = NoteManager.sharedInstance.view;
   for (var i = 0; i < data.length; i++) {
-    var note = data[i];
-    if (note.index != undefined && note.index == view.currentChapter.spinePos) {
-      // menu.setDocument(view.doc || view.document);
-      var parentEle = EPUBJS.DomUtil.findNode(d.body, note.parent);
-      var startContainerEle = EPUBJS.DomUtil.findNode(parentEle, note.startContainer);
-      var endContainerEle = EPUBJS.DomUtil.findNode(parentEle, note.endContainer);
-      var startOffset = note.startOffset;
-      var endOffset = note.endOffset;
-      var tag = note.tag;
-      var comment = note.comment;
-      var text = note.text;
+    let noteJSON = data[i];
+
+    if (noteJSON.index != undefined && noteJSON.index == view.currentChapter.spinePos) {
+      let note = NoteObject.createByJSON(noteJSON);
+      NoteManager.sharedInstance.noteList.add(note);
       //添加至任务队列 异步加载 此处页面并未显示 如果直接调用划线将不准确
       setTimeout(function() {
-        NoteManager.sharedInstance._applyInlineStyle(text, comment, startContainerEle, endContainerEle, startOffset, endOffset, parentEle, false, note.dataId);
+        NoteManager.sharedInstance._applyInlineStyle(note, false);
       }, 0)
     }
   }
 }
 
 export function updateNote(dataId, comment) {
-  NoteManager.sharedInstance.updateNote(dataId, comment);
+  NoteManager.sharedInstance.noteList.update(dataId, comment);
   EPUBJS.core.postMessageToMobile('updateNote', true);
 }

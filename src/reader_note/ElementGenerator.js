@@ -1,13 +1,12 @@
 import { NoteManager } from './NoteManager.js';
 
 //笔记汽泡触发
-export function createNoteIconButton(groupId, comment) {
+export function createNoteIconButton(groupId) {
   var icon = document.createElement('div');
   icon.groupId = groupId;
   icon.style.height = '20px';
   icon.style.width = '33px';
   icon.style.position = 'absolute';
-  icon.data = comment;
   icon.innerHTML = '<img align="middle" width="12" height="12" src="/app/hooks/biji.png" />';
   return icon;
 }

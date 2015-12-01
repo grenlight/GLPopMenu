@@ -1,3 +1,6 @@
+import { NoteManager } from './NoteManager.js';
+import { createNoteIconButton, createLineElement } from './ElementGenerator.js';
+
 /**
  * 通过解析所有字的坐标信息 获取矩形区域的信息
  * 返回 二维数组[][]
@@ -30,12 +33,10 @@ export function getDivData(coors) {
 /**
  * 创建矩形区域
  */
-export function resolveDivData(divDatas) {
+export function resolveDivData(divDatas, groupId) {
   if (!divDatas || divDatas.length === 0) {
     return null;
   }
-  var divs = [];
-  var uuid = dataId ? dataId : EPUBJS.core.uuid();
 
   //笔记区域点击后的回调
   var callback = function(evt) {
@@ -50,8 +51,9 @@ export function resolveDivData(divDatas) {
     NoteManager.sharedInstance.popMenu.ifNeedsDisplay(position);
   }
 
+  var divs = [];
   for (var i = 0; i < divDatas.length; i++) {
-    var div = createLineElement(uuid, divDatas[i]);
+    var div = createLineElement(groupId, divDatas[i]);
     div.addEventListener('touchend', callback, false);
     divs.push(div);
   }
@@ -68,15 +70,16 @@ export function resolveCommentIcon(data, comment, groupId) {
     return null;
   }
   var self_ = this;
-  var icon = createNoteIconButton(groupId, comment);
+  var icon = createNoteIconButton(groupId);
   icon.addEventListener('touchend', function(evt) {
     evt.preventDefault();
     evt.stopPropagation();
     NoteManager.sharedInstance.currentGroupID = groupId;
+    let newComment = NoteManager.sharedInstance.noteList.getComment(groupId);
     var rect = icon.getBoundingClientRect();
     var offsetY = NoteManager.sharedInstance.view.render.padding.top;
     var position = new GLPoint(rect.left + 7, rect.top + 7 + offsetY);
-    GLBubbleView.sharedInstance.ifNeedsDisplay(evt.target.data, position, NoteManager.sharedInstance.editANote, null);
+    GLBubbleView.sharedInstance.ifNeedsDisplay(newComment, position, NoteManager.sharedInstance.editANote, null);
 
   }, false);
 
