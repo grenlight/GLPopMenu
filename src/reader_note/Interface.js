@@ -59,3 +59,8 @@ export function updateNote(dataId, comment) {
   NoteManager.sharedInstance.noteList.update(dataId, comment);
   EPUBJS.core.postMessageToMobile('updateNote', true);
 }
+
+//配置背景颜色
+export function configBackgroundColor(color) {
+
+}
