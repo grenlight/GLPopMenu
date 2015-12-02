@@ -1,10 +1,16 @@
 import { IColorChange } from './IColorChange.js';
 import { Line2d } from './Line2d.js';
 
+/**
+*线条随机下落效果
+*
+*里面一些写法是为了提高运行时的效率，并非多此一举
+*/
 export class FreeFallingEffect extends IColorChange {
   constructor() {
     super('#ff0000');
     this.lineWidth = 3;
+    this.oneLoopFrames = 100;
     this.canvasWidth = window.innerWidth;
     this.canvasHeight = window.innerHeight;
     this.initCanvas();
@@ -37,10 +43,25 @@ export class FreeFallingEffect extends IColorChange {
 
   generateLineList() {
     this.lineList = [];
+    this.lineCount = 0;
     let count = Math.ceil(this.canvasWidth / this.lineWidth);
     for (let i = 0; i < count; i++) {
-      let line = new Line2d(this.lineWidth * (i + 0.5), this.lineWidth);
+      let line = new Line2d(this.lineWidth * i, this.lineWidth);
       this.lineList.push(line);
+    }
+    this.lineCount = this.lineList.length;
+    this.calculatePathList();
+  }
+
+  calculatePathList() {
+    this.pathList = [];
+    for (let i = 0; i < this.oneLoopFrames; i++) {
+      let polygonPath = [this.pTopRight, this.pTopLeft];
+      for (let i = 0; i < this.lineCount; i++) {
+        polygonPath = polygonPath.concat(this.lineList[i].getCoords());
+      }
+      polygonPath.push(this.pTopRight);
+      this.pathList.push(polygonPath);
     }
   }
 
@@ -49,13 +70,15 @@ export class FreeFallingEffect extends IColorChange {
     this.stageBg.beginFill(color);
     this.stageBg.drawRect(0, 0, window.innerWidth, window.innerHeight);
     this.stageBg.endFill();
+    this.renderer.render(this.stage);
   }
 
-  drawPolygon(path) {
+  updatePolygon(path) {
     this.polygon.clear();
     this.polygon.beginFill(this.currentColor);
     this.polygon.drawPolygon(path);
     this.polygon.endFill();
+    this.renderer.render(this.stage);
   }
 
   stopAnimating() {
@@ -67,20 +90,10 @@ export class FreeFallingEffect extends IColorChange {
   }
 
   enterFrame() {
-    let needRun = false;
-    let polygonPath = [this.pTopRight, this.pTopLeft];
-    for (let i = 0, listLength = this.lineList.length; i < listLength; i++) {
-      let results = this.lineList[i].getCoords();
-      let coords = results[0];
-      polygonPath.push(coords[0]);
-      polygonPath.push(coords[1]);
-      needRun = needRun || results[1];
-    }
-    polygonPath.push(this.pTopRight);
-    this.drawPolygon(polygonPath);
-    this.renderer.render(this.stage);
+    let polygonPath = this.pathList[this.frameIndex];
+    this.updatePolygon(polygonPath);
 
-    if (needRun) {
+    if (this.frameIndex < this.oneLoopFrames) {
       super.enterFrame();
     } else {
       this.stopAnimating();

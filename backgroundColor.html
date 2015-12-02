@@ -21,7 +21,8 @@
 </head>
 
 <body>
-  <section id="container" style="width:94%; height:195%;;position:absolute; left:0px; top:0px;">
+  <section id="container" style="font-size:18px; width:94%; height:195%;;position:absolute; left:0px; top:0px;">
+    点击屏幕任意位置可招待背影切换动画
 </section>
 
 <script type='text/javascript' src='./bin/gren.js'></script>
@@ -35,8 +36,7 @@
     var index = currentIndex % colorList.length;
     effect.changeToColor(colorList[index]);
     currentIndex++;
-
-    setTimeout(screenTapped, 3000);
+    // setTimeout(screenTapped, 2000);
   }
   var container = document.getElementById('container');
   container.addEventListener("mouseup", screenTapped, false);

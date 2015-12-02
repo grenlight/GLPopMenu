@@ -9,7 +9,10 @@ export class IAnimation {
 
   startAnimating() {
     this.isAnimating = true;
-    this.requestAnimation();
+    this.frameIndex = 0;
+    this.animationHandler = requestAnimationFrame(() => {
+      this.enterFrame();
+    });
   }
 
   stopAnimating() {
@@ -18,10 +21,7 @@ export class IAnimation {
   }
 
   enterFrame() {
-    this.requestAnimation();
-  }
-
-  requestAnimation() {
+    this.frameIndex++;
     this.animationHandler = requestAnimationFrame(() => {
       this.enterFrame();
     });
