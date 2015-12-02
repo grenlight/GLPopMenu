@@ -17,12 +17,12 @@ export class IColorChange extends IAnimation {
   drawStaticColor() {}
 
   changeToColor(color) {
+    this.stopAnimating();
+
     let hex = Color.str2hex(color);
 
     this.lastColor = this.currentColor;
     this.currentColor = hex;
-
-    this.stopAnimating();
     this.startAnimating();
   }
 

@@ -8,8 +8,6 @@
 
   <script type='text/javascript' src='./bin/pixi/pixi.js'></script>
 
-  <script type='text/javascript' src='./bin/gren.js'></script>
-
 <style media="screen">
 
   section {
@@ -26,15 +24,19 @@
   <section id="container" style="width:94%; height:195%;;position:absolute; left:0px; top:0px;">
 </section>
 
+<script type='text/javascript' src='./bin/gren.js'></script>
+
 <script type="text/javascript">
   effect = new FreeFallingEffect();
   var colorList = ['#00ff00', '#ff0000', '#0000ff'];
   var currentIndex = 0;
 
-  function screenTapped(e) {
+  function screenTapped() {
     var index = currentIndex % colorList.length;
     effect.changeToColor(colorList[index]);
     currentIndex++;
+
+    setTimeout(screenTapped, 3000);
   }
   var container = document.getElementById('container');
   container.addEventListener("mouseup", screenTapped, false);
